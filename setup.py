@@ -1,21 +1,14 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
-# python3 setup.py sdist bdist_wheel
 """
-@File    :   setup.py.py    
+@File    :   setup.py    
 @Contact :   haoheliu@gmail.com
 @License :   (C)Copyright 2020-2100
 
-@Modify Time      @Author    @Version    @Desciption
+@Modify Time      @Author    @Version    @Description
 ------------      -------    --------    -----------
 9/6/21 5:16 PM   Haohe Liu      1.0         None
 """
-
-# !/usr/bin/env python
-# -*- coding: utf-8 -*-
-
-# Note: To use the 'upload' functionality of this file, you must:
-#   $ pipenv install twine --dev
 
 import io
 import os
@@ -30,39 +23,34 @@ DESCRIPTION = "This package is written for the evaluation of speech super-resolu
 URL = "https://github.com/haoheliu/ssr_eval"
 EMAIL = "haoheliu@gmail.com"
 AUTHOR = "Haohe Liu"
-REQUIRES_PYTHON = ">=3.6.0"
+REQUIRES_PYTHON = ">=3.10.0"
 VERSION = "0.0.6"
 
-# What packages are required for this module to be executed?
+# Required packages for this module to be executed
 REQUIRED = [
     "tqdm",
     "librosa",
     "soundfile",
     "scikit-image",
     "wave",
-    "torch>=1.6.0",
+    "torch>=2.1.0",
     "torchlibrosa>=0.0.7"
 ]
 
-# What packages are optional?
+# Optional packages
 EXTRAS = {}
 
-# The rest you shouldn't have to touch too much :)
-# ------------------------------------------------
-# Except, perhaps the License and Trove Classifiers!
-# If you do change the License, remember to change the Trove Classifier for that!
-
+# Get the absolute path of the directory containing this file
 here = os.path.abspath(os.path.dirname(__file__))
 
-# Import the README and use it as the long-description.
-# Note: this will only work if 'README.md' is present in your MANIFEST.in file!
+# Import the README for the long description
 try:
-    with io.open(os.path.join(here, "README.md"), encoding="utf-8") as f:
+    with open(os.path.join(here, "README.md"), encoding="utf-8") as f:
         long_description = "\n" + f.read()
 except FileNotFoundError:
     long_description = DESCRIPTION
 
-# Load the package's __version__.py module as a dictionary.
+# Load the package's __version__.py module as a dictionary
 about = {}
 if not VERSION:
     project_slug = NAME.lower().replace("-", "_").replace(" ", "_")
@@ -80,8 +68,8 @@ class UploadCommand(Command):
 
     @staticmethod
     def status(s):
-        """Prints things in bold."""
-        print("\033[1m{0}\033[0m".format(s))
+        """Prints messages in bold."""
+        print(f"\033[1m{s}\033[0m")
 
     def initialize_options(self):
         pass
@@ -97,19 +85,19 @@ class UploadCommand(Command):
             pass
 
         self.status("Building Source and Wheel (universal) distribution…")
-        os.system("{0} setup.py sdist bdist_wheel --universal".format(sys.executable))
+        os.system(f"{sys.executable} setup.py sdist bdist_wheel --universal")
 
         self.status("Uploading the package to PyPI via Twine…")
         os.system("twine upload dist/*")
 
         self.status("Pushing git tags…")
-        os.system("git tag v{0}".format(about["__version__"]))
+        os.system(f"git tag v{about['__version__']}")
         os.system("git push --tags")
 
         sys.exit()
 
 
-# Where the magic happens:
+# Setup configuration
 setup(
     name=NAME,
     version=about["__version__"],
@@ -120,28 +108,21 @@ setup(
     author_email=EMAIL,
     python_requires=REQUIRES_PYTHON,
     url=URL,
-    # packages=find_packages(exclude=["tests", "*.tests", "*.tests.*", "tests.*"]),
-    # If your package is a single module, use this instead of 'packages':
     py_modules=["sr_eval_vctk"],
-    # entry_points={
-    #     'console_scripts': ['mycli=mymodule:cli'],
-    # },
     install_requires=REQUIRED,
     extras_require=EXTRAS,
     packages=find_packages(),
     include_package_data=True,
     license="MIT",
     classifiers=[
-        # Trove classifiers
-        # Full list: https://pypi.python.org/pypi?%3Aaction=list_classifiers
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: Implementation :: CPython",
         "Programming Language :: Python :: Implementation :: PyPy",
     ],
-    # $ setup.py publish support.
     cmdclass={
         "upload": UploadCommand,
     },
