@@ -32,7 +32,7 @@ REQUIRED = [
     "librosa",
     "soundfile",
     "scikit-image",
-    "wave",
+    "Wave>=0.1.0",
     "torch>=2.1.0",
     "torchlibrosa>=0.0.7"
 ]
